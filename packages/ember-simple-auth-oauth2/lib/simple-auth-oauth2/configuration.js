@@ -3,7 +3,8 @@ import loadConfig from 'simple-auth/utils/load-config';
 var defaults = {
   serverTokenEndpoint:           '/token',
   serverTokenRevocationEndpoint: null,
-  refreshAccessTokens:           true
+  refreshAccessTokens:           true,
+  customHeaders:                 {}
 };
 
 /**
@@ -57,6 +58,15 @@ export default {
     @default true
   */
   refreshAccessTokens: defaults.refreshAccessTokens,
+
+  /**
+    define optional header to be send with any authentication request
+    @property customHeaders
+    @readOnly
+    @type: Object
+    @default {}
+  */
+  customHeaders: defaults.customHeaders,
 
   /**
     @method load

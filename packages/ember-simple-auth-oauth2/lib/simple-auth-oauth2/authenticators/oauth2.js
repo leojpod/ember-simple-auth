@@ -72,6 +72,13 @@ export default Base.extend({
   _refreshTokenTimeout: null,
 
   /**
+    @property customHeader
+    @type Object
+    @default: {}
+  */
+  customHeaders: {},
+
+  /**
     @method init
     @private
   */
@@ -79,6 +86,7 @@ export default Base.extend({
     this.serverTokenEndpoint           = Configuration.serverTokenEndpoint;
     this.serverTokenRevocationEndpoint = Configuration.serverTokenRevocationEndpoint;
     this.refreshAccessTokens           = Configuration.refreshAccessTokens;
+    this.customHeaders                 = Configuration.customHeaders;
   },
 
   /**
@@ -146,6 +154,12 @@ export default Base.extend({
     var _this = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var data = { grant_type: 'password', username: options.identification, password: options.password };
+      var customHeader = null;
+      for (customHeader in _this.customHeaders) {
+        if (hasOwnProperty(_this.customHeaders, customHeader)) {
+          data[customHeader] = _this.customHeaders[customHeader];
+        }
+      }
       if (!Ember.isEmpty(options.scope)) {
         var scopesString = Ember.makeArray(options.scope).join(' ');
         Ember.merge(data, { scope: scopesString });
